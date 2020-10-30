@@ -1,0 +1,19 @@
+{
+	"name":"Toggler",
+	"description":"simple method to control and monitor linux subsystems",
+	"version": "0.4.4",
+	"main":"./toggler.html",
+	"single-instance": false,
+	"window": {
+		"title":      "StudMUFN Toggler",
+		"icon":       "icon.png",
+		"resizable":  true,
+		"toolbar":    false,
+		"show":		  false,
+		"width":	  250
+	},
+	"js-flags":{
+			"name":"org.ktqa.org.toggler"
+	}
+
+}

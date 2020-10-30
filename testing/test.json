@@ -1,0 +1,95 @@
+{
+    "TOGGLER": true,
+	"statefile": "/tmp/toggler.state",
+	"sshd": {
+		"check":"/home/sam/projects/studmufn/toggler/scripts/systemd_service_state.php sshd",
+		"states": {
+			"active": {
+				"color":"green",
+				"text":"SSH Running",
+				"cmd":"sudo systemctl stop sshd"
+			},
+			"inactive": {
+				"color":"red",
+				"text":"SSH Stopped",
+				"cmd":"sudo systemctl start sshd"
+			},
+			"noservice": {
+				"color":"orange",
+				"text":"No SSH Service"
+			}
+		}
+	},
+    "sleepone": {
+        "check": "./switch.php check one",
+		"delay": 5000,
+        "states": {
+            "0": {
+                "color": "red",
+                "text": "One Offline",
+				"cmd": "./switch.php toggle one on"
+            },
+            "1": {
+                "color": "green",
+                "text": "One Online",
+				"cmd": "./switch.php toggle one off"
+            }
+        }
+    },
+    "sleeptwo": {
+        "check": "./switch.php check two",
+		"delay": 5000,
+        "states": {
+            "0": {
+                "color": "red",
+                "text": "Two Offline",
+				"cmd": "./switch.php toggle two on"
+            },
+            "1": {
+                "color": "green",
+                "text": "Two Online",
+				"cmd": "./switch.php toggle two off"
+            }
+        }
+    },
+
+    "sleepthree": {
+        "check": "./switch.php check three",
+		"delay": 5000,
+        "states": {
+            "0": {
+                "color": "red",
+                "text": "Three Offline",
+				"cmd": "./switch.php toggle three on"
+            },
+            "1": {
+                "color": "green",
+                "text": "Three Online",
+				"cmd": "./switch.php toggle three off"
+            }
+        }
+    },
+    "sleepfour": {
+        "check": "./switch.php check four",
+		"delay": 5000,
+        "states": {
+            "0": {
+                "color": "red",
+                "text": "Three Offline",
+				"cmd": "./switch.php toggle four on"
+            },
+            "1": {
+                "color": "green",
+                "text": "Three Online",
+				"cmd": "./switch.php toggle four off"
+            }
+        }
+    },
+
+
+	
+    "plaything": {
+        "name": "Bark",
+        "do": "cvlc --play-and-exit --no-loop bark.ogg"
+    }
+}
