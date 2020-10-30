@@ -15,7 +15,7 @@ var timers = new Array();
 var system = new toggler_system();
 
 
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
 
 
 	// figure out config file
@@ -33,26 +33,26 @@ $(document).ready(function() {
 	system.check_update = function(key) {
 
 
-		var elen = '#'+key;
+		let elen = document.querySelector(`#${key}`);
 
 		if (system.data[key].check == undefined) return;
 
 
+		elen.innerHTML(led(system.data[key].color) + system.data[key].text);
 
-		$(elen).html(led(system.data[key].color) +
-					 system.data[key].text);
 
 		// FIXME  I should probably do this better than I am.
 		try {
 			if (system.data[key].states[ system.data[key].state ].timer != undefined ||
 				system.data[key].states[ system.data[key].state ].timer == true) {
-				$(elen).append("<div class='time'>00:00:00</div>");
+
+				elen.insertAdjacentHTML('afterbegin', "<div class='time'>00:00:00</div>");
 
 				timers[key] = setInterval(function() {
 
 					var diff = (Date.now() - system.data[key].lastchange) / 1000;
 					var ts = diff.toString().toHHMMSS();
-					$('#'+key+' .time').html(ts);
+					document.querySelector(`#${key} .time`).innerHTML(ts);
 
 				}.bind(key), TIMER_INTERVAL);
 			} else {
@@ -64,9 +64,9 @@ $(document).ready(function() {
 
 
 		if (system.data[key].state == 'broken') {
-			$(elen).addClass('broken');
+			elen.classList.add('broken');
 		} else {
-			$(elen).removeClass('broken');
+			elen.classList.remove('broken');
 		}
 
 
@@ -76,7 +76,7 @@ $(document).ready(function() {
 	// what to do when a change request finishes
 	system.change_update = function(key) {
 		console.log(key+' has finished changing');
-		$('#'+key).removeClass('pressed');
+		document.querySelector(`#${key}`).classList.remove('pressed');
 	}
 	
 
@@ -102,7 +102,10 @@ $(document).ready(function() {
 
 
 function draw_buttons() {
-	$("#main").html('');
+
+	let main = document.querySelector("#main");
+
+	main.innerHTML = "";
 
 	var canvas        = '',
 		window_height = 0;
@@ -114,12 +117,13 @@ function draw_buttons() {
 			canvas = '<button id="'+key+'">'+
 					 system.data[key].name +
 					 '</button>';
-			$("#main").append(canvas);
-			$('#'+key).bind('click', do_thing);
+			main.insertAdjacentHTML('beforend', canvas);
+			
+			document.querySelector(`#${key}`).addEventListener("click", do_thing);
 		} else {
 			canvas = '<button id="'+key+'"></button>';
-			$("#main").append(canvas);
-			$('#'+key).bind('click', do_thing);
+			main.insertAdjacentHTML('beforeend', canvas);
+			document.querySelector(`#${key}`).addEventListener("click", do_thing);
 		}
 
 		
@@ -148,10 +152,10 @@ function draw_buttons() {
 
 
 function do_thing() {
-	var id = $(this).attr('id');
+	let id = this.target.id;
 
 	if (system.data[id].state != "broken") {
-		$('#'+id).addClass('pressed');
+		this.target.classList.add('pressed');
 		system.change(id);
 	}
 }
