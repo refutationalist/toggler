@@ -14,19 +14,50 @@ var timers = new Array();
 
 var system = new toggler_system();
 
+function log(txt, error = false) {
+	let errtxt = (error == true) ? "ERROR" : "INFO";
+	let date = Date().toString();
+	process.stderr.write(`LOG (${date}) [${errtxt}]: ${txt}\n`);
+
+	if (error) {
+		console.error(txt, date);
+	} else {
+		console.log(txt, date);
+	}
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
 
 
-	// figure out config file
-	config_file = gui.App.argv;
-	if (config_file.toString().substr(0,1) == "/") {
-		config_file = config_file.toString();
-	} else {
-		config_file = process.env.PWD+'/'+config_file.toString();
+	let config = "";
+
+
+	for (x in gui.App.argv) {
+		let str = gui.App.argv[x];
+		if (str.match(/^--config=/)) {
+
+			let m   = str.match(/^--config=[\'\"]?(.+?)[\'\"]?$/);
+			let env = process.env.PWD;
+
+			log(`config match: ${m[1]}`);
+
+			if (fs.existsSync(m[1])) {
+				config = m[1];
+			} else if (fs.existsSync(env+'/'+m[1])) {
+				config = env+'/'+m[1];
+			}
+			break;
+
+		}
 	}
 
-	console.log("config file is", config_file);
+	if (config == "") {
+		log("no config file specified", true);
+		gui.App.quit();
+	} else {
+		log(`config file: ${config}`);
+	}
 
 
 	// what to do when a state changes
@@ -81,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 
 	// load the config, then draw stuff
-	system.load_config(config_file, function(err, str) {
+	system.load_config(config, function(err, str) {
 		if (err) {
 			alert(str);
 			process.exit(1);
