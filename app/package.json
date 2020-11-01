@@ -9,7 +9,7 @@
 		"icon":       "icon.png",
 		"resizable":  true,
 		"toolbar":    false,
-		"show":		  false,
+		"show":		  true,
 		"width":	  250
 	},
 	"js-flags":{

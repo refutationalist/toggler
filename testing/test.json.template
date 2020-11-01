@@ -1,9 +1,8 @@
 {
-    "TOGGLER": true,
-	"title": "Example Toggler",
+	"TOGGLER": true,
 	"port": 8888,
 	"sshd": {
-		"check":"/home/sam/Code/toggler/scripts/systemd_service_state.php sshd",
+		"check":"SCRIPTSDIR/systemd_service_state.php sshd",
 		"states": {
 			"active": {
 				"color":"green",
@@ -22,69 +21,69 @@
 		}
 	},
     "sleepone": {
-        "check": "/home/sam/Code/toggler/testing/switch.php check one",
+        "check": "TESTDIR/switch.php check one",
 		"delay": 5000,
         "states": {
             "off": {
                 "color": "red",
                 "text": "One Offline",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle one on"
+				"cmd": "TESTDIR/switch.php toggle one on"
             },
             "on": {
                 "color": "green",
                 "text": "One Online",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle one off",
+				"cmd": "TESTDIR/switch.php toggle one off",
 				"timer": true
             }
         }
     },
     "sleeptwo": {
-        "check": "/home/sam/Code/toggler/testing/switch.php check two",
+        "check": "TESTDIR/switch.php check two",
 		"delay": 5000,
         "states": {
             "off": {
                 "color": "red",
                 "text": "Two Offline",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle two on"
+				"cmd": "TESTDIR/switch.php toggle two on"
             },
             "on": {
                 "color": "green",
                 "text": "Two Online",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle two off"
+				"cmd": "TESTDIR/switch.php toggle two off"
             }
         }
     },
 
     "sleepthree": {
-        "check": "/home/sam/Code/toggler/testing/switch.php check three",
+        "check": "TESTDIR/switch.php check three",
 		"delay": 5000,
-		"timer": true,
         "states": {
             "off": {
                 "color": "red",
                 "text": "Three Offline",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle three on"
+				"cmd": "TESTDIR/switch.php toggle three on"
             },
             "on": {
                 "color": "green",
                 "text": "Three Online",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle three off"
+				"cmd": "TESTDIR/switch.php toggle three off",
+				"timer": true
             }
         }
     },
     "sleepfour": {
-        "check": "/home/sam/Code/toggler/testing/switch.php check four",
+        "check": "TESTDIR/switch.php check four",
 		"delay": 5000,
         "states": {
             "off": {
                 "color": "red",
                 "text": "Three Offline",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle four on"
+				"cmd": "TESTDIR/switch.php toggle four on"
             },
             "on": {
                 "color": "green",
                 "text": "Three Online",
-				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle four off"
+				"cmd": "TESTDIR/switch.php toggle four off"
             }
         }
     },
@@ -101,6 +100,6 @@
 	},
     "plaything": {
         "name": "Bark",
-        "do": "cvlc --play-and-exit --no-loop /home/sam/Code/toggler/testing/bark.opus"
+        "do": "cvlc --play-and-exit --no-loop TESTDIR/bark.ogg"
     }
 }

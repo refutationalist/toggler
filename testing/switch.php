@@ -14,11 +14,9 @@ switch ($argv[1]) {
 
 
 		if (file_exists($filename)) {
-			echo "the file exists\n";
-			exit(0);
+			echo "on\n";
 		} else {
-			echo "file does not exist\n";
-			exit(1);
+			echo "off\n";
 		}
 
 
@@ -44,11 +42,12 @@ switch ($argv[1]) {
 	default:
 		usage();
 }
+exit(0);
 
 
 
 
 function usage() {
 	echo "switch.php [check,toggle] [name] [on/off]\n";
-	exit(255);
+	exit(1);
 }
