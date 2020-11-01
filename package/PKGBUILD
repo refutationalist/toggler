@@ -1,0 +1,55 @@
+# Maintainer: Sam Mulvey <code@ktqa.org>
+pkgname=toggler
+pkgver=0.5
+pkgrel=1
+pkgdesc="simple method to control and monitor linux subsystems"
+arch=('x86_64')
+url="http://sam.vis.nu/"
+license=('AGPL3')
+depends=('nwjs')
+optdepends=('php: example scripts')
+makedepends=('inkscape' 'zip')
+install="toggler.install"
+
+prepare() {
+	cp -r ../../{app,icons,scripts,example,README.md} .
+
+}
+
+build() {
+	cd "${srcdir}/app"
+	zip -r "${srcdir}/toggler.nw"  .
+
+	cd "${srcdir}/example"
+	sed -i s%SCRIPTSDIR%/usr/share/toggler/scripts% test.json.template
+	sed -i s%TESTDIR%/usr/share/toggler/example% test.json.template
+	mv test.json.template test.json
+
+
+}
+	
+	
+
+
+package() {
+
+	for r in 16 32 48 64 128 256 512 1024; do
+		mkdir -p "${pkgdir}/usr/share/icons/hicolor/${r}x${r}/apps/"
+		inkscape -o "${pkgdir}/usr/share/icons/hicolor/${r}x${r}/apps/toggler.png" -w $r -h $r "${srcdir}/icons/toggler.svg"
+	done
+
+	mkdir -p "${pkgdir}/usr/bin" "${pkgdir}/usr/lib" "${pkgdir}/usr/share/applications" "${pkgdir}/usr/share/toggler"
+	cp "${srcdir}/toggler.nw" "${pkgdir}/usr/lib/toggler.nw"
+
+
+	install -m755 "${srcdir}/../toggler.exec" "${pkgdir}/usr/bin/toggler"
+	install -m644 "${srcdir}/../toggler.desktop" "${pkgdir}/usr/share/applications"
+	install -m644 "${srcdir}/toggler.nw" "${pkgdir}/usr/lib/toggler.nw"
+	install -m644 "${srcdir}/README.md" "${pkgdir}/usr/share/toggler"
+
+	cp -R "${srcdir}/scripts" "${pkgdir}/usr/share/toggler/scripts"
+	cp -R "${srcdir}/example" "${pkgdir}/usr/share/toggler/example"
+
+
+
+}

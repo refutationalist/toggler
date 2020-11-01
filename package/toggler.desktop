@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Toggler
+Comment=simple method to control and monitor linux subsystems
+Exec=/usr/bin/toggler
+Terminal=false
+Icon=toggler.png
+Type=Application
+Categories=Utility

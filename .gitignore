@@ -1,1 +1,4 @@
-testing/test.json
+example/test.json
+package/pkg
+package/src
+package/*zst

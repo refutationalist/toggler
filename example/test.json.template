@@ -22,7 +22,7 @@
 	},
     "sleepone": {
         "check": "TESTDIR/switch.php check one",
-		"delay": 5000,
+		"delay": 1000,
         "states": {
             "off": {
                 "color": "red",
@@ -39,7 +39,7 @@
     },
     "sleeptwo": {
         "check": "TESTDIR/switch.php check two",
-		"delay": 5000,
+		"delay": 1000,
         "states": {
             "off": {
                 "color": "red",
@@ -56,7 +56,7 @@
 
     "sleepthree": {
         "check": "TESTDIR/switch.php check three",
-		"delay": 5000,
+		"delay": 1000,
         "states": {
             "off": {
                 "color": "red",
@@ -73,7 +73,7 @@
     },
     "sleepfour": {
         "check": "TESTDIR/switch.php check four",
-		"delay": 5000,
+		"delay": 1000,
         "states": {
             "off": {
                 "color": "red",
@@ -100,6 +100,6 @@
 	},
     "plaything": {
         "name": "Bark",
-        "do": "cvlc --play-and-exit --no-loop TESTDIR/bark.ogg"
+        "do": "cvlc --play-and-exit --no-loop TESTDIR/bark.opus"
     }
 }
