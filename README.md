@@ -23,7 +23,7 @@ A fakey, crap method of creating an [Arch Linux](https://archlinux.org) package 
 
 ### Screenshot
 
-![Example](/home/sam/Code/toggler/example.png) 
+![Example](example.png) 
 
 
 ### Licensing
