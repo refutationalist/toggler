@@ -20,13 +20,16 @@ foreach ($cmdout as $c) {
 }
 
 
+$status = "nostate";
 if (isset($results["LoadError"])) {
-	echo "noservice\n";
+	$status =  "noservice";
 } else if (isset($results["ActiveState"])) {
-	echo $results["ActiveState"]."\n";
-} else {
-	echo "nostate\n";
+	$status = $results["ActiveState"];
 }
+
+echo json_encode(array("state" => $status),  JSON_PRETTY_PRINT) . "\n";
+
+
 
 
 

@@ -10,15 +10,21 @@ $filename = sprintf("/tmp/%s.txt", $argv[2]);
 switch ($argv[1]) {
 
 
-	case "check":
+case "check":
 
+		$output = array("state" => "off");
 
 		if (file_exists($filename)) {
-			echo "on\n";
-		} else {
-			echo "off\n";
+			$output["state"] = "on";
+			if ($argv[2] == "three") $output["text"] = "THREE GOOD";
+			if ($argv[2] == "four") {
+				$output["extra"] = trim(`shuf -n 1 /usr/share/dict/words`);
+				$output["color"] = "orange";
+			}
+
 		}
 
+		echo json_encode($output, JSON_PRETTY_PRINT)."\n";
 
 
 		break;

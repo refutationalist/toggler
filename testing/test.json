@@ -29,6 +29,7 @@
                 "color": "red",
                 "text": "One Offline",
 				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle one on"
+
             },
             "on": {
                 "color": "green",
@@ -78,21 +79,21 @@
         "states": {
             "off": {
                 "color": "red",
-                "text": "Three Offline",
+                "text": "Four Offline",
 				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle four on"
             },
             "on": {
                 "color": "green",
-                "text": "Three Online",
+                "text": "Four Online",
 				"cmd": "/home/sam/Code/toggler/testing/switch.php toggle four off"
             }
         }
     },
 	"unknown": {
-		"check": "echo 1",
+		"check": "cat /home/sam/Code/toggler/testing/bad.json",
 		"delay": 500,
 		"states": {
-			"notpoop": {
+			"blooga": {
 				"color": "green",
 				"text": "This will never be seen",
 				"cmd": "echo 0"

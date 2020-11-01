@@ -1,6 +1,6 @@
 
 
-const 
+const
 	gui = require('nw.gui'),
 	win = gui.Window.get(),
 	TIMER_INTERVAL = 1000,
@@ -62,7 +62,9 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 
 
-				elen.querySelector(`span`).innerHTML = led(system.data[key].color) + system.data[key].text;
+				elen.querySelector('span').innerHTML = led(system.data[key].color) + system.data[key].text;
+				elen.querySelector('.extra').innerHTML = (system.data[key].extra) ? system.data[key].extra : "";
+
 
 				if (system.data[key].state == 'broken') {
 					elen.classList.add('broken');
@@ -151,8 +153,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			document.querySelector(`#${key} .extra`).addEventListener("click", subclick);
 			document.querySelector(`#${key} span`).addEventListener("click", subclick);
-			
-			
+
+
 		}
 
 	} catch (e) {
@@ -167,16 +169,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	win.show();
 	log(`set window height to ${window_height} and showing`);
 
-	
+
 
 });
 
 
 
 function led(color) {
-	return '<object type="image/svg+xml" data="img/led.svg?color='+
-		   color+
-		   '"></object>';
+	return `<object type="image/svg+xml" data="img/led.svg?color=${color}"></object>`;
 }
 
 

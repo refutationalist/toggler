@@ -29,7 +29,6 @@ function Toggler(settings = {}) {
 
 	this.settings = Object.assign({}, defaults, settings);
 
-	
 	this.data         = {};
 	this.timers       = {};
 
@@ -68,17 +67,13 @@ function Toggler(settings = {}) {
 
 				let interval = (this.data[key].delay) ? this.data[key].delay : this.settings.interval_default;
 				this.settings.log(`setting timer for ${key} at interval ${interval}`);
-
-
 				this.check(key);
-				
 				this.timers[key] = setInterval(function(key) {
 					this.check(key);
 				}.bind(this), interval, key);
 
 			}
 		}
-		
 	} catch (e) {
 		throw new TogglerException(`config file parse error: ${e.message}`);
 	}
@@ -88,20 +83,21 @@ function Toggler(settings = {}) {
 
 Toggler.prototype.check = function(key) {
 
-	
+
 		if (this.data[key].active == true) return; // check is currently underway
 		this.data[key].lastcheck = Date.now();
-	
+
 
 		pexec.exec(this.data[key].check, function(err, stdout, stderr) {
 			let text  = undefined,
 				color = undefined,
-				state = undefined;
-
-			stdout = stdout.trim();
+				state = undefined,
+				extra = undefined;
 
 
 			try {
+
+
 
 
 				if (err) {
@@ -109,21 +105,24 @@ Toggler.prototype.check = function(key) {
 					state = "broken";
 					color = "black";
 					text  = "Check Error";
-		
+					extra = undefined;
+
 				} else if (stdout != this.data[key].state) {
 
+					let output = JSON.parse(stdout);
 
-					if (this.data[key].states[stdout] != undefined) {
-
-						text  = this.data[key].states[stdout].text;
-						color = this.data[key].states[stdout].color;
-						state = stdout;
+					if (this.data[key].states[output.state] != undefined) {
+						state = output.state;
+						text  = (output.text)  ? output.text  : this.data[key].states[state].text;
+						color = (output.color) ? output.color : this.data[key].states[state].color;
+						if (typeof output.extra != 'undefined') extra = output.extra;
 
 					} else {
 
 						text  = 'Unknown State';
 						color = 'grey';
 						state = 'broken';
+						extra = undefined;
 
 					}
 
@@ -135,7 +134,6 @@ Toggler.prototype.check = function(key) {
 			} catch (e) {
 
 				this.settings.error(`toggler check catch error: ${e.message}`);
-				console.error(this.data[key]);
 				text  = "Bad State";
 				state = "broken";
 				color = "black";
@@ -148,9 +146,9 @@ Toggler.prototype.check = function(key) {
 				this.data[key].text  = text;
 				this.data[key].state = state;
 				this.data[key].color = color;
+				this.data[key].extra = extra;
 				this.settings.log(key +" is now in state "+ state);
 				if (typeof(this.settings.changed) == 'function') this.settings.changed(key);
-				
 			}
 
 
@@ -194,10 +192,10 @@ Toggler.prototype.stateful = function(key) {
 	}
 
 	// FIXME I once had a way to call spawn instead of exec to get around process
-	// watching in node.   If something called from toggler forked a process, exec 
+	// watching in node.   If something called from toggler forked a process, exec
 	// didn't return.   As it happens, neither does spawn.   So I'm removing the complexity.
 	//
-	// But the 'bug' is still there.  Since this is mainly going to be used as an interface 
+	// But the 'bug' is still there.  Since this is mainly going to be used as an interface
 	// for systemd, this isn't huge, but I would like it fixed someday.
 
 	pexec.exec(this.data[key].states[state].cmd, function(err, stdout, stderr) {
@@ -208,7 +206,6 @@ Toggler.prototype.stateful = function(key) {
 		this.data[key].lastchange = Date.now();
 	}.bind(this));
 
-	
 }
 
 
@@ -222,7 +219,6 @@ Toggler.prototype.stateless = function(key, callback) {
 			if (err) this.settings.log(`change stateless error: ${err}`);
 			this.data[key].active = false;
 			this.settings.activated(key);
-			
 		}.bind(this));
 
 
@@ -230,7 +226,6 @@ Toggler.prototype.stateless = function(key, callback) {
 		this.settings.error(`no stateless command for ${key}`);
 	}
 
-	
 
 	this.data[key].active = false;
 
