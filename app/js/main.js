@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			changed: function(key) {
 
 				let elen = document.getElementById(key);
-				console.log("element", elen, "text", system.data[key].text);
 
 				if (system.data[key].check == undefined) {
 					log(`check for ${key} is undefined`, true);
@@ -102,7 +101,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		for (key in system.data) {
 
-			if (typeof system.data[key].states[ system.data[key].state ].timer != 'undefined') {
+			//if (typeof system.data[key].states != 'undefined' && typeof system.data[key].states[ system.data[key].state ].timer != 'undefined') {
+			if (system.data[key].status && system.data[key].states[ system.data[key].state ].timer) {
 
 				if (typeof system.data[key].lastchange == 'undefined') system.data[key].lastchange = Date.now();
 

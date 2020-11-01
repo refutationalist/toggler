@@ -1,5 +1,8 @@
-const pexec = require('child_process');
-const fs    = require('fs');
+const
+	pexec = require('child_process'),
+	fs    = require('fs'),
+	url   = require('url'),
+	http  = require('http');
 
 function TogglerException(message) {
 	this.name = 'TogglerException';
@@ -22,7 +25,7 @@ function Toggler(settings = {}) {
 		log: function(txt) {
 			console.log(txt);
 		},
-		port: null,
+		http: null,
 		config: null,
 		title: null
 	};
@@ -51,9 +54,9 @@ function Toggler(settings = {}) {
 				delete this.data.title;
 			}
 
-			if (this.data.port != undefined) {
-				this.settings.port = this.data.port;
-				delete this.data.port;
+			if (this.data.http != undefined) {
+				this.settings.http = parseInt(this.data.http);
+				delete this.data.http;
 			}
 
 		} else {
@@ -76,6 +79,79 @@ function Toggler(settings = {}) {
 		}
 	} catch (e) {
 		throw new TogglerException(`config file parse error: ${e.message}`);
+	}
+
+
+	try {
+
+
+		if (this.settings.http != null) {
+			this.settings.log(`starting http server on localhost:${this.settings.http}`);
+			
+
+			http.createServer(function(req, res) {
+
+				try {
+					res.writeHead(200, { 'Content-type': 'application/json' });
+					let query = url.parse(req.url, true).query;
+
+					switch (query.cmd) {
+
+						case "status":
+							let output = {
+								error: 0,
+								data: this.data,
+								title: this.settings.title
+							};
+							res.write(JSON.stringify(output, null, 4));
+						break;
+
+
+						case "change":
+
+							if (typeof this.data[query.key] != 'undefined') {
+								this.change(query.key);
+								res.write(JSON.stringify({ error: 0, text: "done." }, null, 4));
+								this.settings.log(`change request for ${query.key} via http`);
+							} else {
+								res.write(JSON.stringify({ error: 1, text: `key ${query.key} does not exist` }, null, 4));
+								console.log(this.data, this.data[query.key]);
+								this.settings.error(`requested key ${query.key} via http does not exist`);
+							}
+
+						break;
+
+						default:
+							res.write(JSON.stringify({ error: 1, text: "Invalid command." }, null, 4));
+							this.settings.error(`invalid command ${query.cmd} called via http`);
+
+
+
+					}
+
+
+				} catch (x) {
+					res.writeHead(500, { 'Content-Type': 'application/json' }); //, 'Access-Control-Allow-Origin': '*' });
+					res.write(JSON.stringify({ error: 1, text: x.message }, null, 4));
+					this.settings.error(`http error ${e.message}`);
+				}
+
+				res.end();
+
+
+
+			}.bind(this)).listen(this.settings.http, '127.0.0.1');
+		}
+
+
+		
+
+
+
+
+	} catch (e) {
+		throw new TogglerException(`could not init webserver: ${e.message}`);
+		
 	}
 
 

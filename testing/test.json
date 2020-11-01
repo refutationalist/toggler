@@ -1,7 +1,7 @@
 {
     "TOGGLER": true,
 	"title": "Example Toggler",
-	"port": 8888,
+	"http": 8888,
 	"sshd": {
 		"check":"/home/sam/Code/toggler/scripts/systemd_service_state.php sshd",
 		"states": {
