@@ -1,6 +1,6 @@
 # Maintainer: Sam Mulvey <code@ktqa.org>
 pkgname=toggler
-pkgver=0.5.1
+pkgver=0.5.2
 pkgrel=1
 pkgdesc="simple method to control and monitor linux subsystems"
 arch=('x86_64')

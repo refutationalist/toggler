@@ -101,15 +101,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		for (key in system.data) {
 
-				if (typeof system.data[key].states == 'undefined') continue;
-				if (typeof system.data[key].states[ system.data[key].state ].timer == 'undefined') continue;
+			if (typeof system.data[key].states == 'undefined') continue;
 				
+			var e = document.querySelector(`#${key} .extra`);
 
-				if (typeof system.data[key].lastchange == 'undefined') system.data[key].lastchange = Date.now();
+			if (typeof system.data[key].lastchange == 'undefined') system.data[key].lastchange = Date.now();
 
-				var diff = (Date.now() - system.data[key].lastchange) / 1000;
-				var ts = diff.toString().toHHMMSS();
-				document.querySelector(`#${key} .extra`).innerHTML =ts;
+			if (typeof system.data[key].states[ system.data[key].state ].timer != 'undefined') {
+
+				let diff = (Date.now() - system.data[key].lastchange) / 1000;
+				let ts = diff.toString().toHHMMSS();
+				e.innerHTML = ts;
+
+			} else {
+
+				if (system.data[key].extra != e.innerHTML != system.data[key].extra) {
+					if (typeof(system.data[key].extra) == 'undefined') {
+						e.innerHTML = "";
+					} else {
+						e.innerHTML = system.data[key].extra;
+					}
+				}
+
+			}
 
 		}
 	}, 1000);
@@ -137,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			document.querySelector(`#${key}`).addEventListener("click", function(evt) {
 
 				let id = evt.target.id;
+				if (!id) return;
 
 				if (system.data[id].state != "broken") {
 					evt.target.classList.add('pressed');

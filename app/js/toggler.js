@@ -87,7 +87,7 @@ function Toggler(settings = {}) {
 
 		if (this.settings.http != null) {
 			this.settings.log(`starting http server on localhost:${this.settings.http}`);
-			
+
 
 			http.createServer(function(req, res) {
 
@@ -144,14 +144,14 @@ function Toggler(settings = {}) {
 		}
 
 
-		
+
 
 
 
 
 	} catch (e) {
 		throw new TogglerException(`could not init webserver: ${e.message}`);
-		
+
 	}
 
 
@@ -171,7 +171,11 @@ Toggler.prototype.check = function(key) {
 				extra = undefined;
 
 
+
+
 			try {
+
+				let output = JSON.parse(stdout);
 
 
 
@@ -183,9 +187,8 @@ Toggler.prototype.check = function(key) {
 					text  = "Check Error";
 					extra = undefined;
 
-				} else if (stdout != this.data[key].state) {
+				} else if (output.state != this.data[key].state) {
 
-					let output = JSON.parse(stdout);
 
 					if (this.data[key].states[output.state] != undefined) {
 						state = output.state;
@@ -204,6 +207,8 @@ Toggler.prototype.check = function(key) {
 
 
 
+				} else {
+					if (output.extra != this.data[key].extra) this.data[key].extra = output.extra;
 				}
 
 
