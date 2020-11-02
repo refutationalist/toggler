@@ -1,13 +1,16 @@
 # Maintainer: Sam Mulvey <code@ktqa.org>
 pkgname=toggler
-pkgver=0.5
+pkgver=0.5.1
 pkgrel=1
 pkgdesc="simple method to control and monitor linux subsystems"
 arch=('x86_64')
 url="http://sam.vis.nu/"
 license=('AGPL3')
 depends=('nwjs')
-optdepends=('php: example scripts')
+optdepends=(
+	'php: example scripts'
+	'systemjack: launch on boot'
+)
 makedepends=('inkscape' 'zip')
 install="toggler.install"
 
@@ -38,7 +41,15 @@ package() {
 		inkscape -o "${pkgdir}/usr/share/icons/hicolor/${r}x${r}/apps/toggler.png" -w $r -h $r "${srcdir}/icons/toggler.svg"
 	done
 
-	mkdir -p "${pkgdir}/usr/bin" "${pkgdir}/usr/lib" "${pkgdir}/usr/share/applications" "${pkgdir}/usr/share/toggler"
+	mkdir -p \
+		"${pkgdir}/usr/bin" \
+		"${pkgdir}/usr/lib" \
+		"${pkgdir}/usr/share/applications" \
+		"${pkgdir}/usr/share/toggler" \
+		"${pkgdir}/usr/lib/systemjack/extra.d" \
+		"${pkgdir}/usr/lib/systemd/system" \
+		"${pkgdir}/etc/systemjack/toggler"
+
 	cp "${srcdir}/toggler.nw" "${pkgdir}/usr/lib/toggler.nw"
 
 
@@ -49,6 +60,11 @@ package() {
 
 	cp -R "${srcdir}/scripts" "${pkgdir}/usr/share/toggler/scripts"
 	cp -R "${srcdir}/example" "${pkgdir}/usr/share/toggler/example"
+
+	install -Dm755 ../libexec_toggler.sh "$pkgdir"/usr/lib/systemjack/toggler
+	install -Dm755 ../extra_toggler.sh   "$pkgdir"/usr/lib/systemjack/extra.d/toggler.sh
+	install -Dm644 '../toggler@.service'    "$pkgdir"/usr/lib/systemd/system
+
 
 
 

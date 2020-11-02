@@ -101,15 +101,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		for (key in system.data) {
 
-			//if (typeof system.data[key].states != 'undefined' && typeof system.data[key].states[ system.data[key].state ].timer != 'undefined') {
-			if (system.data[key].status && system.data[key].states[ system.data[key].state ].timer) {
+				if (typeof system.data[key].states == 'undefined') continue;
+				if (typeof system.data[key].states[ system.data[key].state ].timer == 'undefined') continue;
+				
 
 				if (typeof system.data[key].lastchange == 'undefined') system.data[key].lastchange = Date.now();
 
 				var diff = (Date.now() - system.data[key].lastchange) / 1000;
 				var ts = diff.toString().toHHMMSS();
 				document.querySelector(`#${key} .extra`).innerHTML =ts;
-			}
 
 		}
 	}, 1000);

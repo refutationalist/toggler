@@ -1,4 +1,4 @@
 example/test.json
-package/pkg
-package/src
-package/*zst
+archlinux/pkg
+archlinux/src
+archlinux/*zst

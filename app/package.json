@@ -1,7 +1,7 @@
 {
 	"name":"Toggler",
 	"description":"simple method to control and monitor linux subsystems",
-	"version": "0.5",
+	"version": "0.5.1",
 	"main":"toggler.html",
 	"single-instance": false,
 	"window": {
